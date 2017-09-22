@@ -9,12 +9,12 @@ def get_response(request):
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server_socket.bind(('localhost', 8000))  #
-server_socket.listen(0)  #
+server_socket.bind(('localhost', 8000))  #Связываем сокет с хостом и портом
+server_socket.listen(10)  #
 
 print 'Started'
 
-while 1:
+while True:
     try:
         (client_socket, address) = server_socket.accept()
         print 'Got new client', client_socket.getsockname()  #
