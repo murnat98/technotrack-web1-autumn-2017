@@ -11,8 +11,8 @@ def http_parser(request):
     method = res[0][0]
     url = res[0][1]
     protocol = res[0][2]
-    res = res[1:]
     #Получаем заголовки в словаре
+    res = res[1:]
     header = dict()
     for str in res:
         header[str[0].rstrip(":")] = " ".join(str[1:])
@@ -22,23 +22,33 @@ def http_parser(request):
 
 def get_response(request):
 	method, url, protocol, header = http_parser(request)
-	body = "" #Тело ответа в html
+	body = """<!DOCTYPE html> 
+<html>
+<head>
+	<title>HTTP сервер</title>
+	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+</head>
+<body>
+	""" #Тело ответа в html
 	code = 200 #HTTP код ответа
-	
+	status = "OK"
 	if url == "/":
-		body = "Hello mister!<br>You are: " + header["User-Agent"]
+		body += "<h3>Hello mister!</h3>" \
+				+ "<p>You are: " + header["User-Agent"] + "</p>"
 		
 	elif url == "/test/":
-		body = request.replace("\n", "<br>") #Выводим запрос (Замена "\n" для html)
+		body += request.replace("\n", "<br>") #Выводим запрос (Замена "\n" для html)
 		
 	elif url.split("/")[1] == "media": #Url начинается с /media/
 		if url == "/media/": #Получить файлы в папке files
 			#Формируем список файлов в директории
 			m = os.listdir("files")
-			body = "<h3>Files in the media: </h3>"
-			body += "<ul>"
+			body += "<h3>Files in the media: </h3>\n"
+			body += "<ul>\n"
 			for f in m:
-				body += "<li>" + f + "</li>"
+				body += "<li><a href=" + url + f + ">" \
+						+ f \
+						+ "</a></li>\n" 
 			body += "</ul>"
 		else: #Вывести файл
 			try:
@@ -48,22 +58,27 @@ def get_response(request):
 				res = "/".join(m)
 				#Пытаемся открыть и вывести файл
 				file = open("."+res, 'r')
-				body = file.read()
+				body += file.read()
 			except IOError: #Файла не существует
-				body = "<font color=red size=4>File not found</font>"
+				body += "<font color=red size=4>File not found</font>"
 				code = 404
+				status = "Not Found"
 				
 	else: #Неверный url
-		body = "<font color=red size=4>Page not found</font>"
+		body += "<font color=red size=4>Page not found</font>"
 		code = 404
-	return protocol, code, body
+		status = "Not Found"
+	body += "\n</body>\n</html>"
+	return protocol, code, status, body
 	
 
 
 def get_http_response(request):
-	protocol, code, body = get_response(request)
+	protocol, code, status, body = get_response(request)
 	#Формируем HTTP ответ
-	return protocol + " " + str(code) + "\n" + "Content-Type: text/html" + "\n\n" + body
+	return protocol + " " + str(code) + " " + status + "\n" \
+			+ "Content-Type: text/html" + "\n\n" \
+			+ body
 		
 	
 
@@ -71,7 +86,7 @@ def get_http_response(request):
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_socket.bind(('localhost', 8000))  #Связываем сокет с хостом и портом
-server_socket.listen(10)  #Указываем максимальную очередь при подключении
+server_socket.listen(0)  #Указываем максимальную очередь при подключении
 
 print 'Started'
 
