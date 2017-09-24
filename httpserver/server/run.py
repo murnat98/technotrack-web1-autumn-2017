@@ -141,16 +141,16 @@ content_type = "Content-Type: text/html"
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server_socket.bind(('localhost', 8000))  #
-server_socket.listen(0)  #
+server_socket.bind(('localhost', 8000))  # устанавливаем хост и номер порта
+server_socket.listen(0)  # режим прослушивания
 
 print 'Started'
 
 while 1:
     try:
         (client_socket, address) = server_socket.accept()
-        print 'Got new client', client_socket.getsockname()  #
-        request_string = client_socket.recv(2048)  #
+        print 'Got new client', client_socket.getsockname()  # вывод нового подключения
+        request_string = client_socket.recv(2048)  # принимаем данные от клиента (макс. 2048)
 
         user_info = parse(request_string)
         server_info = generate_page(user_info, request_string)
@@ -158,12 +158,12 @@ while 1:
         send = server_info["protocol"] + " " + str(server_info["code"]) + " " + server_info["status"] \
             + "\n" + content_type + "\n\n" + server_info["html"]
 
-        client_socket.send(send)  #
+        client_socket.send(send)  # отправляем данные клиенту
         client_socket.close()
 
-    except KeyboardInterrupt:  #
+    except KeyboardInterrupt:  # ручное выключение сервера
         print 'Stopped'
 
-        server_socket.close()  #
+        server_socket.close()  # разрыв соединения
 
         exit()
