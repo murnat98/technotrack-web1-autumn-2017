@@ -15,7 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from core.views import *
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^$', main),
+    url(r'^about/$', about),
+    url(r'^portfolio/$', portfolio),
+    url(r'^portfolio/(\S+)$', portfolio_images),
+    url(r'^advertising/$', advertising),
+    url(r'^advertising/(\S+)$', advertising_images),
+    url(r'^editorial/$', editorial),
+    url(r'^editorial/(\S+)$', editorial_images),
+    url(r'^contacts/$', contacts),
 ]
