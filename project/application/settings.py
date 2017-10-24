@@ -37,9 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
-    'ads',
+    'core.apps.CoreConfig',
+    'ads.apps.AdsConfig',
 ]
+
+AUTH_USER_MODEL = 'core.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,7 +83,7 @@ DATABASES = {
         'NAME': 'track_project',
         'USER': 'root',
         'PASSWORD': 'password',
-        'HOST': 'localhost'
+        'HOST': 'localhost',
     }
 }
 

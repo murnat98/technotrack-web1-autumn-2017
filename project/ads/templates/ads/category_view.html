@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <table border="1">
+
+        {% for category in category_object %}
+
+            <tr>
+                <td><a href="/ads/restaurant/{{ category.id }}">{{ category.title }}</a></td>
+            </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% endblock %}

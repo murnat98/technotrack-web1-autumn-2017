@@ -2,10 +2,11 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from core.models import User
+
+from ads.models import Restaurant
 
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+@admin.register(Restaurant)
+class AdminRestaurant(admin.ModelAdmin):
 
     pass
