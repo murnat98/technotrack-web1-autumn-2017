@@ -20,6 +20,5 @@ from core.views import main
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', main),
-    url(r'^ads/', include('ads.urls', namespace='ads', app_name='ads')),
     url(r'^users/', include('core.urls', namespace='users', app_name='core')),
 ]

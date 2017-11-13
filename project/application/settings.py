@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
-    'ads.apps.AdsConfig',
+    'question.apps.QuestionConfig'
 ]
 
 AUTH_USER_MODEL = 'core.User'

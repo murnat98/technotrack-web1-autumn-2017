@@ -8,7 +8,6 @@ from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.views.generic import FormView, DetailView
 
-from ads.models import Restaurant
 from application.settings import LOGIN_REDIRECT_URL
 from core.forms import LoginForm, RegisterForm
 from core.models import User
@@ -26,7 +25,8 @@ def show_users(request):
 
 def show_user(request, user_id):
     requested_user = get_object_or_404(User.objects.all(), id=user_id)
-    user_posts = Restaurant.objects.filter(author=requested_user)
+    # user_posts = Restaurant.objects.filter(author=requested_user)
+    user_posts = None
 
     return render(request, 'core/show_user.html', {'requested_user': requested_user, 'user_posts': user_posts})
 
@@ -34,7 +34,7 @@ def show_user(request, user_id):
 class Login(LoginView):
     template_name = 'core/login.html'
     form_class = LoginForm
-    redirect_authenticated_user = LOGIN_REDIRECT_URL
+    redirect_authenticated_user = LOGIN_REDIRECT_URL  # TODO: login after registering
 
 
 class Register(FormView):
