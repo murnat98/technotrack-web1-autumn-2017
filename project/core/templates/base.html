@@ -10,13 +10,23 @@
 
     <h1>Заголовок</h1>
 
+    <div id="login">
+        {% if user.is_authenticated %}
+            <span>Здравствуйте, {{ user.username }}</span>
+            <span><a href="{% url 'core:logout' %}">Выход</a></span>
+        {% else %}
+            <a href="{% url 'core:login' %}">Логин</a><br>
+            <a href="{% url 'core:register' %}">Регистрация</a>
+        {% endif %}
+    </div>
+
 {% endblock %}
 
 {% block menu %}
 
     <a href="/">Главная</a>
-    <a href="/ads/restaurant">Рестораны</a>
-    <a href="/users">Пользователи</a>
+{#    <a href="{% url 'ads:category_view' 'restaurant' %}">Рестораны</a>#}
+    <a href="{% url 'core:show_users' %}">Пользователи</a>
 
 {% endblock %}
 

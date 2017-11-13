@@ -2,14 +2,14 @@
 
 {% block content %}
 
-    <h3>{{ user.username }}</h3>
+    <h3>{{ requested_user.username }}</h3>
 
     <table border="1">
 
         {% for user_post in user_posts %}
 
             <tr>
-                <td><a href="/ads/restaurant/{{ user_post.id }}">{{ user_post.title }}</a></td>
+                <td><a href="{% url 'ads:post_detail' category='restaurant' post_id=user_post.id %}">{{ user_post.title }}</a></td>
             </tr>
 
         {% endfor %}
