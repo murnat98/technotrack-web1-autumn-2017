@@ -18,7 +18,7 @@ class Categories(models.Model):
 
 
 class Questions(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Автор')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Автор', related_name='question_author')
     category = models.ManyToManyField(Categories, related_name='questions', verbose_name='Категория')
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     text = models.TextField(default='', verbose_name='Текст')

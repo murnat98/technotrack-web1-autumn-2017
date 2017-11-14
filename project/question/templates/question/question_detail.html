@@ -2,6 +2,7 @@
 
 {% block content %}
 
+    <h1>Вопрос</h1>
     <div>
         <p>Категории:
             {% for category in question.category.all %}
@@ -15,6 +16,14 @@
         <p>Автор: {{ question.author }}</p>
         <p>Заголовок: {{ question.title }}</p>
         <p>Текст: {{ question.text }}</p>
+
+        <h1>Ответы</h1>
+        {% for answer in question.answers.all %}
+            <div>
+                {{ answer.author }}: <b>{{ answer.title }}</b><br>
+                {{ answer.text }}
+            </div><br>
+        {% endfor %}
     </div>
 
 {% endblock %}

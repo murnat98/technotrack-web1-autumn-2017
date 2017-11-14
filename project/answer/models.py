@@ -8,8 +8,8 @@ from question.models import Questions
 
 
 class Answers(models.Model):
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Автор')
-    question = models.ForeignKey(Questions, verbose_name='Вопрос')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Автор', related_name='answer_author')
+    question = models.ForeignKey(Questions, verbose_name='Вопрос', related_name='answers')
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     text = models.TextField(default='', verbose_name='Текст вопроса')
 
