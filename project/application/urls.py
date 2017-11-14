@@ -20,5 +20,6 @@ from core.views import main
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', main),
-    url(r'^users/', include('core.urls', namespace='users', app_name='core')),
+    url(r'^users/', include('core.urls', namespace='core')),
+    url(r'^questions/', include('question.urls', namespace='questions')),
 ]

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div>
+        <p>Категории:
+            {% for category in question.category.all %}
+                <a href="{% url 'questions:category_detail' pk=category.pk %}">{{ category }}</a>
+            {% endfor %}
+        </p>
+    </div>
+
+    <div>
+        <small>Дата добавления: {{ question.posted_date }}</small>
+        <p>Автор: {{ question.author }}</p>
+        <p>Заголовок: {{ question.title }}</p>
+        <p>Текст: {{ question.text }}</p>
+    </div>
+
+{% endblock %}
