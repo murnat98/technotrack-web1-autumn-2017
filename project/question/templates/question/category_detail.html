@@ -3,9 +3,7 @@
 {% block content %}
 
     <div>
-        {% for question in category.questions.all %}
-            <a href="{% url 'questions:question_detail' pk=question.pk %}">{{ question }}</a><br>
-        {% endfor %}
+        {% include 'question/questions_list.html' with questions=category.questions.all %}
     </div>
 
 {% endblock %}

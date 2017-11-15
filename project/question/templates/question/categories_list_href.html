@@ -1,0 +1,6 @@
+{% for category in categories %}
+    <a href="{% url 'questions:category_detail' pk=category.pk %}">{{ category }}</a>
+    {% if not forloop.last %}
+        {{ delimiter }}
+    {% endif %}
+{% endfor %}

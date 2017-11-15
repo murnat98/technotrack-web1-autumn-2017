@@ -7,9 +7,7 @@
     </div>
 
     <div>
-        {% for category in categories %}
-            <a href="{% url 'questions:category_detail' pk=category.pk %}">{{ category.category_name }}</a><br>
-        {% endfor %}
+        {% include 'question/categories_list_href.html' with categories=categories delimiter='<br>' %}
     </div>
 
 {% endblock %}

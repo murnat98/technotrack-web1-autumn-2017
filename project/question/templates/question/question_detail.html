@@ -5,9 +5,10 @@
     <h1>Вопрос</h1>
     <div>
         <p>Категории:
-            {% for category in question.category.all %}
-                <a href="{% url 'questions:category_detail' pk=category.pk %}">{{ category }}</a>
-            {% endfor %}
+{#            {% for category in question.category.all %}#}
+{#                <a href="{% url 'questions:category_detail' pk=category.pk %}">{{ category }}</a>#}
+{#            {% endfor %}#}
+            {% include 'question/categories_list_href.html' with categories=question.category.all delimiter=', ' %}
         </p>
     </div>
 

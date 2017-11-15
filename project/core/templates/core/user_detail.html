@@ -4,9 +4,7 @@
 
     <p>Вопросы: </p>
     <div>
-        {% for question in username.question_author.all %}
-            <a href="{% url 'questions:question_detail' pk=question.pk %}">{{ question }}</a><br>
-        {% endfor %}
+        {% include 'question/questions_list.html' with questions=username.question_author.all %}
     </div>
 
 {% endblock %}
