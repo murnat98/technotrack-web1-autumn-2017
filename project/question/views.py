@@ -22,6 +22,12 @@ class CategoryDetail(DetailView):
     context_object_name = 'category'
 
 
+class QuestionList(ListView):
+    model = Questions
+    template_name = 'question/questions_list.html'
+    context_object_name = 'questions'
+
+
 class QuestionDetail(DetailView):
     model = Questions
     template_name = 'question/question_detail.html'

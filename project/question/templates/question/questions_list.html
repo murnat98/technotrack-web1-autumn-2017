@@ -1,3 +1,9 @@
-{% for question in questions %}
-    <a href="{% url 'questions:question_detail' pk=question.pk %}">{{ question }}</a><br>
-{% endfor %}
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div>
+        {% include 'question/questions_list_href.html' with questions=questions %}
+    </div>
+
+{% endblock %}

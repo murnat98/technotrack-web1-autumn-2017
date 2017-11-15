@@ -4,7 +4,7 @@
 
     <p>Вопросы: </p>
     <div>
-        {% include 'question/questions_list.html' with questions=username.question_author.all %}
+        {% include 'question/questions_list_href.html' with questions=username.question_author.all %}
     </div>
 
 {% endblock %}
