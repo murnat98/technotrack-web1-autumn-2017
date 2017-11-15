@@ -24,14 +24,6 @@ def show_users(request):
     return render(request, 'core/show_users.html', {'users': users})
 
 
-# def show_user(request, user_id):
-#     requested_user = get_object_or_404(User.objects.all(), id=user_id)
-#     # user_posts = Restaurant.objects.filter(author=requested_user)
-#     user_posts = None
-#
-#     return render(request, 'core/show_user.html', {'requested_user': requested_user, 'user_posts': user_posts})
-
-
 class UserDetail(DetailView):
     template_name = 'core/user_detail.html'
     model = User
