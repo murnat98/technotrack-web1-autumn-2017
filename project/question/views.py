@@ -5,10 +5,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import View
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from application import settings
-from question.forms import CreateQuestionForm, CreateAnswerForm
+from question.forms import CreateQuestionForm, CreateAnswerForm, UpdateQuestionForm
 from question.models import Questions, Categories, Answers
 
 
@@ -73,6 +73,19 @@ class CreateQuestionView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super(CreateQuestionView, self).form_valid(form)
+
+
+class UpdateQuestionView(LoginRequiredMixin, UpdateView):
+    login_url = settings.LOGIN_URL
+    template_name = 'question/update_question.html'
+    model = Questions
+    form_class = UpdateQuestionForm
+
+    def get_success_url(self):
+        return reverse('questions:question_detail', kwargs={'pk': self.object.pk})
+
+    def get_queryset(self):
+        return super(UpdateQuestionView, self).get_queryset().filter(author=self.request.user)
 
 
 def my_questions(request):

@@ -2,10 +2,6 @@
 
 {% block content %}
 
-    <form action="{% url 'questions:create_question' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Добавить" name="submit">
-    </form>
+    {% include 'question/includes/simple_form.html' with form=form value='Добавить' %}
 
 {% endblock %}

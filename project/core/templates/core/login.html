@@ -4,6 +4,7 @@
 
     <form action="{% url 'core:login' %}" method="post">
         {% csrf_token %}
+{#        TODO: add next field#}
         {{ form.as_p }}
         <input type="submit" value="Логин" name="submit">
     </form>

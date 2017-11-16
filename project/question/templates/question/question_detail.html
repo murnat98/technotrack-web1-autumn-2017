@@ -5,10 +5,7 @@
     <h1>Вопрос</h1>
     <div>
         <p>Категории:
-{#            {% for category in question.category.all %}#}
-{#                <a href="{% url 'questions:category_detail' pk=category.pk %}">{{ category }}</a>#}
-{#            {% endfor %}#}
-            {% include 'question/categories_list_href.html' with categories=question.category.all delimiter=', ' %}
+            {% include 'question/includes/categories_list_href.html' with categories=question.category.all delimiter=', ' %}
         </p>
     </div>
 
@@ -17,6 +14,7 @@
         <p>Автор: {{ question.author }}</p>
         <p>Заголовок: {{ question.title }}</p>
         <p>Текст: {{ question.text }}</p>
+        {% include 'question/includes/update_post.html' with question=question url='questions:update_question' update_text='Редактировать вопрос' %}
 
         <h1>Ответы</h1>
         {% for answer in question.answers.all %}

@@ -3,11 +3,8 @@
 {% block content %}
 
     <div>
-        <a href="{% url 'questions:create_question' %}">Задать вопрос</a>
-    </div>
-
-    <div>
-        {% include 'question/categories_list_href.html' with categories=categories delimiter='<br>' %}
+        <a href="{% url 'questions:create_question' %}">Задать вопрос</a><br>
+        {% include 'question/includes/categories_list_href.html' with categories=categories delimiter='<br>' %}
     </div>
 
 {% endblock %}

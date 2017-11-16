@@ -3,7 +3,8 @@
 {% block content %}
 
     <div>
-        {% include 'question/questions_list_href.html' with questions=questions %}
+        <a href="{% url 'questions:create_question' %}">Задать вопрос</a><br>
+        {% include 'question/includes/questions_list_href.html' with questions=questions %}
     </div>
 
 {% endblock %}
