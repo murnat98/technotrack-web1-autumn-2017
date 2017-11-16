@@ -2,8 +2,9 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView
 
 from application import settings
@@ -72,3 +73,11 @@ class CreateQuestionView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super(CreateQuestionView, self).form_valid(form)
+
+
+def my_questions(request):
+    return render(request, 'question/my_questions.html')
+
+
+def my_answers(request):
+    return render(request, 'question/my_answers.html')

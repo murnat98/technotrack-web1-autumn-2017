@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div>
+        {% include 'question/answers_list_href.html' with answers=user.answer_author.all %}
+    </div>
+
+{% endblock %}

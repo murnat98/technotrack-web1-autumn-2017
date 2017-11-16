@@ -13,7 +13,9 @@
     <div id="login">
         {% if user.is_authenticated %}
             <span>Здравствуйте, {{ user.username }}</span>
-            <span><a href="{% url 'core:logout' %}">Выход</a></span>
+            <span><a href="{% url 'core:logout' %}">Выход</a></span><br>
+            <a href="{% url 'questions:my_questions' %}">Мои Вопросы</a><br>
+            <a href="{% url 'questions:my_answers' %}">Мои Ответы</a>
         {% else %}
             <a href="{% url 'core:login' %}">Логин</a><br>
             <a href="{% url 'core:register' %}">Регистрация</a>

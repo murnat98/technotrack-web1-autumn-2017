@@ -20,10 +20,10 @@
 
         <h1>Ответы</h1>
         {% for answer in question.answers.all %}
-            <div>
+            <div id="answer_{{ answer.pk }}">
                 {{ answer.author }}: <b>{{ answer.title }}</b><br>
                 {{ answer.text }}
-            </div><br>
+            </div>
         {% endfor %}
     </div>
 
