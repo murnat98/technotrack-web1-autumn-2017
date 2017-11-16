@@ -4,11 +4,10 @@ from __future__ import unicode_literals
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from application import settings
-from question.forms import CreateQuestionForm, CreateAnswerForm, UpdateQuestionForm
+from question.forms import CreateQuestionForm, CreateAnswerForm, UpdateQuestionForm, UpdateAnswerForm
 from question.models import Questions, Categories, Answers
 
 
@@ -30,7 +29,7 @@ class QuestionList(ListView):
     context_object_name = 'questions'
 
 
-class QuestionDetail(CreateView):
+class QuestionDetail(CreateView):  # really question detail and creating answer
     model = Answers
     template_name = 'question/question_detail.html'
     form_class = CreateAnswerForm
@@ -59,6 +58,28 @@ class QuestionDetail(CreateView):
         context['question'] = self.question
 
         return context
+
+
+class UpdateAnswerView(LoginRequiredMixin, UpdateView):
+    login_url = settings.LOGIN_URL
+    form_class = UpdateAnswerForm
+    model = Answers
+    template_name = 'question/update_answer.html'
+
+    def __init__(self, **kwargs):
+        super(UpdateAnswerView, self).__init__(**kwargs)
+        self.question = None
+
+    def get_success_url(self):
+        question_pk = self.question.pk
+        return reverse('questions:question_detail', kwargs={'pk': question_pk}) + '#answer_' + str(question_pk)
+
+    def get_queryset(self):
+        return super(UpdateAnswerView, self).get_queryset().filter(author=self.request.user)
+
+    def form_valid(self, form):
+        self.question = form.instance.question
+        return super(UpdateAnswerView, self).form_valid(form)
 
 
 class CreateQuestionView(LoginRequiredMixin, CreateView):

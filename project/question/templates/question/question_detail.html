@@ -14,13 +14,16 @@
         <p>Автор: {{ question.author }}</p>
         <p>Заголовок: {{ question.title }}</p>
         <p>Текст: {{ question.text }}</p>
-        {% include 'question/includes/update_post.html' with question=question url='questions:update_question' update_text='Редактировать вопрос' %}
+        {% include 'question/includes/update_post.html' with post=question url='questions:update_question' update_text='Редактировать вопрос' %}
 
         <h1>Ответы</h1>
         {% for answer in question.answers.all %}
             <div id="answer_{{ answer.pk }}">
-                {{ answer.author }}: <b>{{ answer.title }}</b><br>
-                {{ answer.text }}
+                <span>
+                    {{ answer.author }}: <b>{{ answer.title }}</b><br>
+                    {{ answer.text }}
+                </span>
+                {% include 'question/includes/update_post.html' with post=answer url='questions:update_answer' update_text='Редактировать ответ' %}
             </div>
         {% endfor %}
     </div>
