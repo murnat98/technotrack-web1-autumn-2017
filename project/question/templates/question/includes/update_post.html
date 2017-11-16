@@ -1,0 +1,3 @@
+{% if question.author == user %}
+    <a href="{% url url pk=question.pk %}">{{ update_text }}</a>
+{% endif %}
