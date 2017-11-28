@@ -8,7 +8,6 @@ from question.models import Answers
 
 
 class Like(models.Model):
-    field = models.BooleanField(default=False)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Пользователь', related_name='user')
     answer = models.ForeignKey(Answers, verbose_name='Ответ', related_name='answers')
 

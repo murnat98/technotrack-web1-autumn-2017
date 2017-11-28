@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.contrib.auth import authenticate, logout
+from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -41,14 +41,9 @@ class Register(FormView):
     success_url = '/'
     template_name = 'core/register.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        authenticate(request)
-
-        return super(Register, self).dispatch(request, *args, **kwargs)
-
     def form_valid(self, form):
-        form.save()
-
+        user = form.save()
+        login(self.request, user)
         return super(Register, self).form_valid(form)
 
 
