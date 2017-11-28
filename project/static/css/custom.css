@@ -1,0 +1,25 @@
+.navbar-static-top {
+    margin-bottom: 19px;
+}
+
+.custom-list {
+    border-top: groove 2px;
+    padding-top: 20px;
+    margin-bottom: 20px;
+}
+
+.custom-small {
+    font-size: 10px;
+}
+
+.custom-wrap {
+    white-space: pre-wrap;
+}
+
+.custom-form {
+    margin-top: 20px;
+}
+
+.underline {
+    text-decoration: underline;
+}

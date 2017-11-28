@@ -1,3 +1,7 @@
 {% for question in questions %}
-    <a href="{% url 'questions:question_detail' pk=question.pk %}">{{ question }}</a><br>
+    <div class="list-group custom-list">
+        <p class="lead"><a href="{% url 'questions:question_detail' pk=question.pk %}">{{ question }}</a></p>
+        <p class="custom-small">{{ question.text }}</p>
+        <p class="text-right custom-small">Автор: {{ question.author }}</p>
+    </div>
 {% endfor %}

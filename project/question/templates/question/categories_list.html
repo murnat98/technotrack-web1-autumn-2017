@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    {% include 'title.html' with title='Категории' %}
+{% endblock %}
+
 {% block content %}
 
+    <h1>Категории</h1>
+
     <div>
-        <a href="{% url 'questions:create_question' %}">Задать вопрос</a><br>
-        {% include 'question/includes/categories_list_href.html' with categories=categories delimiter='<br>' %}
+        {% include 'question/includes/categories_list_href.html' with categories=categories delimiter='' %}
     </div>
 
 {% endblock %}

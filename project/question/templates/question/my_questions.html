@@ -1,9 +1,1 @@
-{% extends 'base.html' %}
-
-{% block content %}
-
-    <div>
-        {% include 'question/includes/questions_list_href.html' with questions=user.question_author.all %}
-    </div>
-
-{% endblock %}
+{% include 'question/includes/questions_list.html' with questions=user.question_author.all header='Мои вопросы' %}

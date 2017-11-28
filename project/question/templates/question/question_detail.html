@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    {% include 'title.html' with title='Вопроc '|add:question.title %}
+{% endblock %}
+
 {% block content %}
 
-    <h1>Вопрос</h1>
+    <h1>{{ question.title }}</h1>
     <div>
         <p>Категории:
             {% include 'question/includes/categories_list_href.html' with categories=question.category.all delimiter=', ' %}
@@ -10,28 +14,38 @@
     </div>
 
     <div>
-        <small>Дата добавления: {{ question.posted_date }}</small>
+        <small>Добавлено: {{ question.posted_date }}</small>
         <p>Автор: {{ question.author }}</p>
-        <p>Заголовок: {{ question.title }}</p>
-        <p>Текст: {{ question.text }}</p>
+        <p class="custom-wrap">{{ question.text }}</p>
         {% include 'question/includes/update_post.html' with post=question url='questions:update_question' update_text='Редактировать вопрос' %}
 
-        <h1>Ответы</h1>
+        <h2>Ответы</h2>
         {% for answer in question.answers.all %}
-            <div id="answer_{{ answer.pk }}">
-                <span>
-                    {{ answer.author }}: <b>{{ answer.title }}</b><br>
-                    {{ answer.text }}
+            <div id="answer_{{ answer.pk }}" class="custom-list" style="margin-bottom: 20px;">
+                <span class="custom-wrap">
+                    <span class="lead underline">{{ answer.author }}</span><br> {{ answer.text }}
                 </span>
                 {% include 'question/includes/update_post.html' with post=answer url='questions:update_answer' update_text='Редактировать ответ' %}
             </div>
         {% endfor %}
     </div>
 
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Добавить">
-    </form>
+    {% load widget_tweaks %}
+    <div class="custom-form">
+        <p>Новый ответ</p>
+        <form action="" method="post" role="form">
+            {% csrf_token %}
+            <div class="row">
+                <div class="form-group col-md-6">
+
+                    <label for="id_text">Ответ</label>
+                    {% render_field form.text class='form-control' %}
+
+                </div>
+            </div>
+
+            <input type="submit" value="Добавить">
+        </form>
+    </div>
 
 {% endblock %}

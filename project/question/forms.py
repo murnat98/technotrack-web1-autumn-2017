@@ -5,7 +5,7 @@ from question.models import Questions, Answers
 
 
 question_fields = ['category', 'title', 'text']
-answer_fields = ['title', 'text']
+answer_fields = ['text']
 
 
 class CreateQuestionForm(forms.ModelForm):
@@ -29,4 +29,4 @@ class UpdateAnswerForm(forms.ModelForm):
 class CreateAnswerForm(forms.ModelForm):
     class Meta:
         model = Answers
-        fields = ['title', 'text']
+        fields = answer_fields

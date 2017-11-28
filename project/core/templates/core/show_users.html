@@ -1,17 +1,19 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    {% include 'title.html' with title='Пользователи' %}
+{% endblock %}
+
 {% block content %}
 
-    <table border="1">
+    <h1>Пользователи</h1>
 
     {% for user in users %}
 
-        <tr>
-            <td><a href="{% url 'core:user' user.id %}">{{ user }}</a></td>
-        </tr>
+        <div class="custom-list">
+            <a href="{% url 'core:user' user.id %}">{{ user }}</a>
+        </div>
 
     {% endfor %}
-
-    </table>
 
 {% endblock %}

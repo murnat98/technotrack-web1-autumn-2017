@@ -1,3 +1,5 @@
 {% for answer in answers %}
-    <a href="{% url 'questions:question_detail' pk=answer.question.pk %}#answer_{{ answer.pk }}">{{ answer }}</a><br>
+    <div class="custom-list">
+        <a href="{% url 'questions:question_detail' pk=answer.question.pk %}#answer_{{ answer.pk }}">{{ answer }}</a><br>
+    </div>
 {% endfor %}

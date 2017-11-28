@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    {% include 'title.html' with title='Регистрация' %}
+{% endblock %}
+
 {% block content %}
 
-    <form action="{% url 'core:register' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Зарегистрироваться" name="register">
-    </form>
+    {% include 'form.html' with submit='Зарегистрироваться' %}
 
 {% endblock %}
