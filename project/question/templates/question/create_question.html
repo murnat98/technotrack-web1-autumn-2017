@@ -4,10 +4,19 @@
     {% include 'title.html' with title='Задать вопрос' %}
 {% endblock %}
 
+{% load static %}
+
+{% block links %}
+    <script type="text/javascript" src="{% static 'chosen/chosen.jquery.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'chosen/chosen.css' %}">
+{% endblock %}
+
 {% block content %}
 
     <h1>Задать вопрос</h1>
 
-    {% include 'form.html' with submit='Задать' %}
+    {% include 'form.html' with submit='Задать вопрос' %}
+
+    <script type="text/javascript" src="{% static 'js/chosen.js' %}"></script>
 
 {% endblock %}
