@@ -20,13 +20,27 @@
         {% include 'question/includes/update_post.html' with post=question url='questions:update_question' update_text='Редактировать вопрос' %}
 
         <h2>Ответы</h2>
+
         {% for answer in question.answers.all %}
+
             <div id="answer_{{ answer.pk }}" class="custom-list" style="margin-bottom: 20px;">
+
                 <span class="custom-wrap">
+
                     <span class="lead underline">{{ answer.author }}</span><br> {{ answer.text }}
+
+                    <button class="btn btn-success like" style="margin-bottom: 15px;"
+                            data-url="{% url 'likes:like' pk=answer.pk %}" data-postid="{{ answer.pk }}">
+                        <i class="glyphicon glyphicon-heart"></i>
+                        <span id="likes-{{ answer.id }}"></span>
+                    </button>
+
                 </span>
+
                 {% include 'question/includes/update_post.html' with post=answer url='questions:update_answer' update_text='Редактировать ответ' %}
+
             </div>
+
         {% endfor %}
     </div>
 

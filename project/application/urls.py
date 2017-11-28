@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^$', main),
     url(r'^users/', include('core.urls', namespace='core')),
     url(r'^questions/', include('question.urls', namespace='questions')),
+    url(r'^likes/', include('likes.urls', namespace='likes')),
 ]

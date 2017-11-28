@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core.apps.CoreConfig',
     'question.apps.QuestionConfig',
-    'widget_tweaks'
+    'likes.apps.LikesConfig',
+    'widget_tweaks',
 ]
 
 AUTH_USER_MODEL = 'core.User'
