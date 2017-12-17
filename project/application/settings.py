@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'question.apps.QuestionConfig',
     'likes.apps.LikesConfig',
     'widget_tweaks',
+    'debug_toolbar',
 ]
 
 AUTH_USER_MODEL = 'core.User'
@@ -53,7 +54,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
+
+INTERNAL_IPS = '127.0.0.1',
 
 ROOT_URLCONF = 'application.urls'
 
