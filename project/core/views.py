@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.contrib.auth import authenticate, logout, login
+from django.contrib.auth import authenticate, logout, login, get_user_model
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -26,8 +26,11 @@ def show_users(request):
 
 class UserDetail(DetailView):
     template_name = 'core/user_detail.html'
-    model = User
+    model = get_user_model()
     context_object_name = 'username'
+
+    def get_queryset(self):
+        return super(UserDetail, self).get_queryset().prefetch_related('question_author')
 
 
 class Login(LoginView):

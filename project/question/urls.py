@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
 from question.views import CategoriesList, CategoryDetail, QuestionDetail, CreateQuestionView, QuestionList, \
-    my_questions, my_answers, UpdateQuestionView, UpdateAnswerView
+    UpdateQuestionView, UpdateAnswerView, MyQuestionsList, MyAnswersList
 
 urlpatterns = [
     url(r'^categories/$', CategoriesList.as_view(), name='categories_list'),
@@ -11,6 +11,6 @@ urlpatterns = [
     url(r'^create_question/$', CreateQuestionView.as_view(), name='create_question'),
     url(r'^update_question/(?P<pk>\d+)$', UpdateQuestionView.as_view(), name='update_question'),
     url(r'^update_answer/(?P<pk>\d+)$', UpdateAnswerView.as_view(), name='update_answer'),
-    url(r'^my_questions/$', my_questions, name='my_questions'),
-    url(r'^m_answers/$', my_answers, name='my_answers'),
+    url(r'^my_questions/$', MyQuestionsList.as_view(), name='my_questions'),
+    url(r'^my_answers/$', MyAnswersList.as_view(), name='my_answers'),
 ]

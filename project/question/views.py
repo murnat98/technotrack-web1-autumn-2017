@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
@@ -22,11 +22,17 @@ class CategoryDetail(DetailView):
     template_name = 'question/category_detail.html'
     context_object_name = 'category'
 
+    def get_queryset(self):
+        return super(CategoryDetail, self).get_queryset().prefetch_related('questions__author')
+
 
 class QuestionList(ListView):
     model = Questions
     template_name = 'question/questions_list.html'
     context_object_name = 'questions'
+
+    def get_queryset(self):
+        return super(QuestionList, self).get_queryset().select_related('author')
 
 
 class QuestionDetail(CreateView):  # really question detail and creating answer
@@ -48,7 +54,10 @@ class QuestionDetail(CreateView):  # really question detail and creating answer
         return super(QuestionDetail, self).form_valid(form)
 
     def dispatch(self, request, pk=None, *args, **kwargs):
-        self.question = get_object_or_404(Questions, id=pk)
+        self.question = get_object_or_404(
+            Questions.objects.prefetch_related('answers', 'answers__author').select_related('author'),
+            id=pk
+        )
 
         return super(QuestionDetail, self).dispatch(request, *args, **kwargs)
 
@@ -109,9 +118,19 @@ class UpdateQuestionView(LoginRequiredMixin, UpdateView):
         return super(UpdateQuestionView, self).get_queryset().filter(author=self.request.user)
 
 
-def my_questions(request):
-    return render(request, 'question/my_questions.html')
+class MyQuestionsList(ListView):
+    model = Questions
+    template_name = 'question/my_questions.html'
+    context_object_name = 'questions'
+
+    def get_queryset(self):
+        return super(MyQuestionsList, self).get_queryset().filter(author=self.request.user).select_related('author')
 
 
-def my_answers(request):
-    return render(request, 'question/my_answers.html')
+class MyAnswersList(ListView):
+    model = Answers
+    template_name = 'question/my_answers.html'
+    context_object_name = 'answers'
+
+    def get_queryset(self):
+        return super(MyAnswersList, self).get_queryset().filter(author=self.request.user).select_related('question')
