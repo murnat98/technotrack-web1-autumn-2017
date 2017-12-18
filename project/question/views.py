@@ -22,8 +22,13 @@ class CategoryDetail(DetailView):
     template_name = 'question/category_detail.html'
     context_object_name = 'category'
 
-    def get_queryset(self):
-        return super(CategoryDetail, self).get_queryset().prefetch_related('questions__author')
+    def get_context_data(self, **kwargs):
+        context = super(CategoryDetail, self).get_context_data(**kwargs)
+
+        context['questions'] = Questions.objects.filter(
+            category=self.kwargs[b'pk']).annotate_answers_count().select_related('author')
+
+        return context
 
 
 class QuestionList(ListView):
@@ -32,7 +37,7 @@ class QuestionList(ListView):
     context_object_name = 'questions'
 
     def get_queryset(self):
-        return super(QuestionList, self).get_queryset().select_related('author')
+        return super(QuestionList, self).get_queryset().select_related('author').annotate_answers_count()
 
 
 class QuestionDetail(CreateView):  # really question detail and creating answer

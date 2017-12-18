@@ -32,6 +32,14 @@ class UserDetail(DetailView):
     def get_queryset(self):
         return super(UserDetail, self).get_queryset().prefetch_related('question_author')
 
+    def get_context_data(self, **kwargs):
+        context = super(UserDetail, self).get_context_data(**kwargs)
+
+        context['questions'] = Questions.objects.filter(
+            author=kwargs[b'object']).annotate_answers_count().select_related('author')
+
+        return context
+
 
 class Login(LoginView):
     template_name = 'core/login.html'

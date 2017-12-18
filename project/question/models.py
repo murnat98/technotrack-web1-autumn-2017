@@ -17,6 +17,11 @@ class Categories(models.Model):
         verbose_name_plural = 'Категории'
 
 
+class QuestionQuerySet(models.QuerySet):
+    def annotate_answers_count(self):
+        return self.annotate(answers_count=models.Count('answers__id'))
+
+
 class Questions(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Автор', related_name='question_author')
     category = models.ManyToManyField(Categories, related_name='questions', verbose_name='Категория')
@@ -25,6 +30,8 @@ class Questions(models.Model):
     posted_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)
+
+    objects = QuestionQuerySet.as_manager()
 
     def __unicode__(self):
         return self.title

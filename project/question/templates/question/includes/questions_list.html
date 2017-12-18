@@ -10,7 +10,7 @@
     <p><a class="btn btn-lg btn-primary" href="{% url 'questions:create_question' %}">Задать вопрос</a></p>
     <div class="row">
         <div class="col-md-12">
-            {% include 'question/includes/questions_list_href.html' with questions=questions %}
+            {% include 'question/includes/questions_list_href.html' %}
         </div>
     </div>
 
