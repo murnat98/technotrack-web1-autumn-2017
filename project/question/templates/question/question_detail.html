@@ -48,7 +48,7 @@
                     <button class="btn btn-success like" style="margin-bottom: 15px;"
                             data-url="{% url 'likes:like' pk=answer.pk %}" data-postid="{{ answer.pk }}">
                         <i class="glyphicon glyphicon-heart"></i>
-                        <span id="likes-{{ answer.id }}"></span>
+                        <span id="likes-{{ answer.id }}">{{ answer.likes_count }}</span>
                     </button>
 
                 </span>

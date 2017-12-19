@@ -55,6 +55,7 @@ class Answers(models.Model):
     text = models.TextField(default='', verbose_name='Ответ')
     posted_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+    likes_count = models.IntegerField(default=0, verbose_name='Количество лайков')
     is_deleted = models.BooleanField(default=False)
 
     def __unicode__(self):

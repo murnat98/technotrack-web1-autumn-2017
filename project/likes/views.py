@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.db import models
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
 from django.views import View
 
-from likes.models import Like
 from question.models import Answers
 
 
 class LikeView(View):
     def post(self, request, pk=None):
-        obj, created = Like.objects.get_or_create(
-            user=request.user,
-            answer_id=pk,
-        )
+        answer = Answers.objects.get(id=pk)
 
-        result = obj.answer.answers.all().count()
-        return HttpResponse(result)
+        if request.user.is_authenticated:
+            Answers.objects.filter(id=pk).update(likes_count=models.F('likes_count') + 1)
+
+        likes_count = answer.likes_count + 1
+
+        return HttpResponse(likes_count)
