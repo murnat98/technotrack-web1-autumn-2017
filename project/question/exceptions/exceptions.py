@@ -1,0 +1,2 @@
+class AttributesNotConfigured(Exception):
+    pass

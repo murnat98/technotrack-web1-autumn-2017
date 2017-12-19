@@ -1,3 +1,12 @@
+{#{% if post.author == user %}#}
+{#    <a class="btn btn-default" href="{% url url pk=post.pk %}">{{ update_text }}</a>#}
+{#{% endif %}#}
+
 {% if post.author == user %}
-    <a class="btn btn-default" href="{% url url pk=post.pk %}">{{ update_text }}</a>
+    <form action="{% url url pk=post.pk %}" method="{{ method }}">
+        {% if method == 'POST' or method == 'PUT' %}
+            {% csrf_token %}
+        {% endif %}
+        <input class="btn btn-default" type="submit" value="{{ update_text }}">
+    </form>
 {% endif %}

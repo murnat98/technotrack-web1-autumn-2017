@@ -2,13 +2,14 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.db import models
 from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse, reverse_lazy, resolve
+from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from application import settings
+from question.exceptions.exceptions import AttributesNotConfigured
 from question.forms import CreateQuestionForm, CreateAnswerForm, UpdateQuestionForm, UpdateAnswerForm
 from question.models import Questions, Categories, Answers
 
@@ -42,7 +43,8 @@ class QuestionList(ListView):
     context_object_name = 'questions'
 
     def get_queryset(self):
-        return super(QuestionList, self).get_queryset().select_related('author').annotate_answers_count()
+        return super(QuestionList, self).get_queryset().filter(is_deleted=False).select_related(
+            'author').annotate_answers_count()
 
 
 class QuestionDetail(CreateView):  # really question detail and creating answer
@@ -59,13 +61,21 @@ class QuestionDetail(CreateView):  # really question detail and creating answer
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        form.instance.question = get_object_or_404(Questions, id=self.kwargs['pk'])
+        question_instance = get_object_or_404(Questions, id=self.kwargs['pk'])
+        if question_instance.is_deleted is True:
+            form.add_error('text', 'Вопрос удален')
+
+            return self.form_invalid(form)
+        else:
+            form.instance.question = question_instance
 
         return super(QuestionDetail, self).form_valid(form)
 
     def dispatch(self, request, pk=None, *args, **kwargs):
         self.question = get_object_or_404(
-            Questions.objects.prefetch_related('answers', 'answers__author').select_related('author'),
+            Questions.objects.filter(models.Q(is_deleted=False) | models.Q(author_id=request.user.pk)).prefetch_related(
+                'answers', 'answers__author'
+            ).select_related('author'),
             id=pk
         )
 
@@ -134,7 +144,9 @@ class MyQuestionsList(ListView):
     context_object_name = 'questions'
 
     def get_queryset(self):
-        return super(MyQuestionsList, self).get_queryset().filter(author=self.request.user).select_related('author')
+        return super(MyQuestionsList, self).get_queryset().filter(
+            models.Q(author=self.request.user) & models.Q(is_deleted=False)
+        ).select_related('author').annotate_answers_count()
 
 
 class MyAnswersList(ListView):
@@ -146,17 +158,58 @@ class MyAnswersList(ListView):
         return super(MyAnswersList, self).get_queryset().filter(author=self.request.user).select_related('question')
 
 
-class DeleteQuestionView(View):
-    model = Questions
-    success_url = reverse_lazy('questions:questions_list')
+class DeleteRestoreView(View):
+    model = None
+    is_deleted = None
+    error_get_parameter = None
+    success_get_parameter = None
 
     def get(self, request, pk=None):
-        try:
-            obj = self.model.objects.get(id=pk)
-        except self.model.DoesNotExist:
-            return redirect(self.success_url)
+        return redirect(reverse('questions:question_detail', kwargs={'pk': pk}))
 
-        obj.is_deleted = True
+    def post(self, request, pk=None):
+        if self.model is None:
+            raise AttributesNotConfigured('model is None')
+        if self.is_deleted is None:
+            raise AttributesNotConfigured('is_deleted is None')
+        if self.success_get_parameter is None:
+            raise AttributesNotConfigured('success_get_parameter is None')
+        if self.error_get_parameter is None:
+            raise AttributesNotConfigured('error_get_parameter is None')
+
+        url = reverse('questions:question_detail', kwargs={'pk': pk})
+
+        try:
+            obj = self.model.objects.filter(author=request.user).get(id=pk)
+        except self.model.DoesNotExist:
+            return redirect('%s?%s' % (url, self.error_get_parameter))
+
+        obj.is_deleted = self.is_deleted
         obj.save()
 
-        return redirect(self.success_url)
+        return redirect('%s?%s' % (url, self.success_get_parameter))
+
+
+class DeleteQuestionView(DeleteRestoreView):
+    model = Questions
+    is_deleted = True
+    error_get_parameter = 'error_deleting'
+    success_get_parameter = 'deleted'
+
+
+class RestoreQuestion(DeleteRestoreView):
+    model = Questions
+    is_deleted = False
+    error_get_parameter = 'error_restoring'
+    success_get_parameter = 'restored'
+
+
+class QuestionArchive(ListView):
+    model = Questions
+    template_name = 'question/question_archive.html'
+    context_object_name = 'questions'
+
+    def get_queryset(self):
+        return super(QuestionArchive, self).get_queryset().filter(
+            models.Q(author=self.request.user) & models.Q(is_deleted=True)
+        ).select_related('author').annotate_answers_count()

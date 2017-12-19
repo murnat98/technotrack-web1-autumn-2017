@@ -47,17 +47,13 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
-                        {#                        <span>Здравствуйте, {{ user.username }}</span>#}
-                        {#                        <span><a href="{% url 'core:logout' %}">Выход</a></span><br>#}
-                        {#                        <a href="{% url 'questions:my_questions' %}">Мои Вопросы</a><br>#}
-                        {#                        <a href="{% url 'questions:my_answers' %}">Мои Ответы</a>#}
-
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true"
                                aria-expanded="false">{{ user.username }}<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="{% url 'questions:my_questions' %}">Мои Вопросы</a></li>
+                                <li><a href="{% url 'questions:questions_archive' %}">Архив вопросов</a></li>
                                 <li><a href="{% url 'questions:my_answers' %}">Мои Ответы</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{% url 'core:logout' %}">Выход</a></li>

@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
 from question.views import CategoriesList, CategoryDetail, QuestionDetail, CreateQuestionView, QuestionList, \
-    UpdateQuestionView, UpdateAnswerView, MyQuestionsList, MyAnswersList, DeleteQuestionView
+    UpdateQuestionView, UpdateAnswerView, MyQuestionsList, MyAnswersList, DeleteQuestionView, QuestionArchive, \
+    RestoreQuestion
 
 urlpatterns = [
     url(r'^categories/$', CategoriesList.as_view(), name='categories_list'),
@@ -11,7 +12,9 @@ urlpatterns = [
     url(r'^create_question/$', CreateQuestionView.as_view(), name='create_question'),
     url(r'^update_question/(?P<pk>\d+)$', UpdateQuestionView.as_view(), name='update_question'),
     url(r'^delete_question/(?P<pk>\d+)$', DeleteQuestionView.as_view(), name='delete_question'),
+    url(r'^restore_question/(?P<pk>\d+)$', RestoreQuestion.as_view(), name='restore_question'),
     url(r'^update_answer/(?P<pk>\d+)$', UpdateAnswerView.as_view(), name='update_answer'),
     url(r'^my_questions/$', MyQuestionsList.as_view(), name='my_questions'),
+    url(r'^questions_archive/$', QuestionArchive.as_view(), name='questions_archive'),
     url(r'^my_answers/$', MyAnswersList.as_view(), name='my_answers'),
 ]

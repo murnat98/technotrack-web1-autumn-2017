@@ -6,6 +6,16 @@
 
 {% block content %}
 
+    {% if request.GET.deleted == '' %}
+        {% include 'question/includes/alert.html' with alert_class='alert-success' message='Вопрос успешно удален!' %}
+    {% elif request.GET.error_deleting == '' %}
+        {% include 'question/includes/alert.html' with alert_class='alert-danger' message='При удалении вопроса произошла ошибка!' %}
+    {% elif request.GET.restored == '' %}
+        {% include 'question/includes/alert.html' with alert_class='alert-success' message='Вопрос успешно восстановлен!' %}
+    {% elif request.GET.error_restoring == '' %}
+        {% include 'question/includes/alert.html' with alert_class='alert-danger' message='При восстановлении вопроса произошла ошибка!' %}
+    {% endif %}
+
     <h1>{{ question.title }}</h1>
     <div>
         <p>Категории:
@@ -18,8 +28,12 @@
         <p>Автор: {{ question.author }}</p>
         <p class="custom-wrap">{{ question.text }}</p>
 
-        {% include 'question/includes/update_post.html' with post=question url='questions:update_question' update_text='Редактировать вопрос' %}
-            {% include 'question/includes/update_post.html' with post=question url='questions:delete_question' update_text='Удалить вопрос' %}
+        {% if not question.is_deleted %}
+            {% include 'question/includes/update_post.html' with post=question url='questions:update_question' update_text='Редактировать вопрос' method='GET' %}
+            {% include 'question/includes/update_post.html' with post=question url='questions:delete_question' update_text='Удалить вопрос' method='POST' %}
+        {% else %}
+            {% include 'question/includes/update_post.html' with post=question url='questions:restore_question' update_text='Вернуть вопрос' method='POST' %}
+        {% endif %}
 
         <h2>Ответы</h2>
 
@@ -38,30 +52,33 @@
                     </button>
 
                 </span>
-
-                {% include 'question/includes/update_post.html' with post=answer url='questions:update_answer' update_text='Редактировать ответ' %}
+                {% if not question.is_deleted %}
+                    {% include 'question/includes/update_post.html' with post=answer url='questions:update_answer' update_text='Редактировать ответ' method='get' %}
+                {% endif %}
 
             </div>
 
         {% endfor %}
     </div>
 
-    {% load widget_tweaks %}
-    <div class="custom-form">
-        <p>Новый ответ</p>
-        <form action="" method="post" role="form">
-            {% csrf_token %}
-            <div class="row">
-                <div class="form-group col-md-6">
+    {% if not question.is_deleted %}
+        {% load widget_tweaks %}
+        <div class="custom-form">
+            <p>Новый ответ</p>
+            <form action="" method="post" role="form">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="form-group col-md-6">
 
-                    <label for="id_text">Ответ</label>
-                    {% render_field form.text class='form-control' %}
+                        <label for="id_text">Ответ</label>
+                        {% render_field form.text class='form-control' %}
 
+                    </div>
                 </div>
-            </div>
 
-            <input type="submit" value="Добавить">
-        </form>
-    </div>
+                <input type="submit" value="Ответить">
+            </form>
+        </div>
+    {% endif %}
 
 {% endblock %}
