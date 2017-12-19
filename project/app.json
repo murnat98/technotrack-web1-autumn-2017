@@ -4,7 +4,7 @@
   "image": "heroku/python",
   "repository": "https://git.heroku.com/secret-atoll-54285.git",
   "keywords": ["python", "django" ],
-  "addons": [ "heroku-mysql" ],
+  "addons": [ "heroku-postgres" ],
   "environments": {
     "test": {
       "scripts": {
