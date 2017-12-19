@@ -1,19 +1,7 @@
 {% for category in categories %}
 
-    {% if delimiter == '' %}
-
-        <div class="custom-list">
-            <a href="{% url 'questions:category_detail' pk=category.pk %}">{{ category }}</a>
-        </div>
-
-    {% else %}
-
-        <a href="{% url 'questions:category_detail' pk=category.pk %}">{{ category }}</a>
-
-        {% if not forloop.last %}
-            {{ delimiter }}
-        {% endif %}
-
-    {% endif %}
+    <div class="custom-list">
+        <a href="{% url 'questions:category_detail' pk=category.pk %}">{{ category }}</a> ({{ category.questions_count }} вопросов)
+    </div>
 
 {% endfor %}

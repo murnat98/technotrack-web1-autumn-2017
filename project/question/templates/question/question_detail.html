@@ -17,7 +17,9 @@
         <small>Добавлено: {{ question.posted_date }}</small>
         <p>Автор: {{ question.author }}</p>
         <p class="custom-wrap">{{ question.text }}</p>
+
         {% include 'question/includes/update_post.html' with post=question url='questions:update_question' update_text='Редактировать вопрос' %}
+            {% include 'question/includes/update_post.html' with post=question url='questions:delete_question' update_text='Удалить вопрос' %}
 
         <h2>Ответы</h2>
 

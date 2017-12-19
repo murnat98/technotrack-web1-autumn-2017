@@ -2,9 +2,11 @@
 from __future__ import unicode_literals
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
-from django.urls import reverse
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse, reverse_lazy, resolve
+from django.views import View
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from application import settings
 from question.forms import CreateQuestionForm, CreateAnswerForm, UpdateQuestionForm, UpdateAnswerForm
@@ -15,6 +17,9 @@ class CategoriesList(ListView):
     model = Categories
     template_name = 'question/categories_list.html'
     context_object_name = 'categories'
+
+    def get_queryset(self):
+        return super(CategoriesList, self).get_queryset().annotate_questions_count()
 
 
 class CategoryDetail(DetailView):
@@ -139,3 +144,19 @@ class MyAnswersList(ListView):
 
     def get_queryset(self):
         return super(MyAnswersList, self).get_queryset().filter(author=self.request.user).select_related('question')
+
+
+class DeleteQuestionView(View):
+    model = Questions
+    success_url = reverse_lazy('questions:questions_list')
+
+    def get(self, request, pk=None):
+        try:
+            obj = self.model.objects.get(id=pk)
+        except self.model.DoesNotExist:
+            return redirect(self.success_url)
+
+        obj.is_deleted = True
+        obj.save()
+
+        return redirect(self.success_url)

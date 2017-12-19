@@ -6,8 +6,15 @@ from django.db import models
 from application import settings
 
 
+class CategoryQuerySet(models.QuerySet):
+    def annotate_questions_count(self):
+        return self.annotate(questions_count=models.Count('questions__id'))
+
+
 class Categories(models.Model):
     category_name = models.CharField(max_length=255, verbose_name='Название категории')
+
+    objects = CategoryQuerySet.as_manager()
 
     def __unicode__(self):
         return self.category_name
